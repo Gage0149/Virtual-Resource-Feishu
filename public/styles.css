@@ -52,3 +52,35 @@ header{min-height:72px;height:auto;padding:10px 0}
 @media(max-width:1100px){.health-grid-comfort{grid-template-columns:repeat(2,1fr)}.health-summary{align-items:flex-start}.health-summary-stats{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:780px){header{min-height:64px}.header-resource-title strong{font-size:22px}.health-summary{flex-direction:column}.health-summary-stats{width:100%;max-width:none}.health-grid-comfort{grid-template-columns:1fr 1fr}}
 @media(max-width:520px){.health-summary-stats,.health-grid-comfort{grid-template-columns:1fr}.health-score{min-width:0}.health-ring{width:72px;height:72px}}
+
+/* v7.0 input usability */
+input,textarea,select,button{font:inherit}
+.field input,.field select,.field textarea,.filterbar input,.filterbar select,.connect-grid input,.connect-grid select,.connect-grid textarea{
+  font-size:15px;
+  line-height:1.5;
+  min-height:44px;
+  padding:10px 12px;
+  border-radius:9px;
+  border-color:#d6dee9;
+  transition:border-color .15s ease,box-shadow .15s ease,background .15s ease;
+  caret-color:var(--blue);
+}
+.field textarea,.connect-grid textarea{min-height:96px;line-height:1.65;resize:vertical}
+.field input:hover,.field select:hover,.field textarea:hover,.filterbar input:hover,.filterbar select:hover,.connect-grid input:hover,.connect-grid select:hover,.connect-grid textarea:hover{border-color:#bcc9da}
+.field input:focus,.field select:focus,.field textarea:focus,.filterbar input:focus,.filterbar select:focus,.connect-grid input:focus,.connect-grid select:focus,.connect-grid textarea:focus{
+  border-color:#6d9df1;
+  box-shadow:0 0 0 3px rgba(36,111,235,.11);
+  background:#fff;
+  outline:none;
+}
+.field input::placeholder,.field textarea::placeholder,.filterbar input::placeholder{color:#9aa6b6;opacity:1}
+.field input[readonly],.field input:disabled,.field select:disabled,.field textarea:disabled{background:#f4f6f9;color:#7b8796;cursor:not-allowed}
+.filterbar{align-items:center}
+.filterbar input#search{min-width:260px;flex:1 1 360px;padding-left:14px}
+.drive-link-field input,.compact-url input{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;font-size:13px;letter-spacing:0;direction:ltr;text-align:left}
+.multi-select-trigger{min-height:44px;font-size:15px;padding:10px 12px;border-radius:9px}
+.multi-select-option{min-height:38px}.multi-select-option span{font-size:14px}.multi-chip{font-size:12px;padding:5px 8px}
+@media(max-width:780px){
+  .field input,.field select,.field textarea,.filterbar input,.filterbar select,.connect-grid input,.connect-grid select,.connect-grid textarea,.multi-select-trigger{font-size:16px}
+  .filterbar input#search{min-width:100%;flex-basis:100%}
+}
