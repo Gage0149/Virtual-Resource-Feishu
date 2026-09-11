@@ -22,3 +22,33 @@ body{font-size:14px;line-height:1.55}
 .field>span{font-size:13px}.field input,.field select,.field textarea{font-size:13px;min-height:40px}.field small,.hint,.cover-help,.detail-edit-hint{font-size:11px}.multi-select-trigger{font-size:13px;min-height:40px}.multi-select-option span{font-size:13px}.multi-chip{font-size:11px}.modalHead h2{font-size:20px}.modalBody{font-size:13px}.detailBox h3{font-size:11px}.detailBox div{font-size:13px}.modalActions{font-size:13px}
 .active-filter{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:-4px 0 12px;padding:10px 13px;font-size:13px;background:#f7faff;border-color:#dbe8fa}.active-filter b{color:var(--blue)}
 @media(max-width:780px){body{font-size:15px}.side nav button{font-size:13px}.filterbar input,.filterbar select{font-size:14px}.card-body h3{font-size:14px}}
+
+/* v6.9 resource header, direct links and health center */
+header{min-height:72px;height:auto;padding:10px 0}
+.header-resource-title{display:flex;flex-direction:column;gap:1px;line-height:1.1}
+.header-resource-title span{font-size:10px;letter-spacing:.14em;color:#7c91ad;font-weight:700}
+.header-resource-title strong{font-size:25px;color:#17243a;font-weight:800;letter-spacing:-.02em}
+.resource-content{padding-top:2px}
+.drive-link-field{position:relative}
+.drive-open-link{display:inline-flex;align-items:center;align-self:flex-start;margin-top:2px;color:#2468c9;font-size:12px;font-weight:600;text-decoration:none;padding:4px 0}
+.drive-open-link:hover{text-decoration:underline;color:#1654a5}
+.drive-link-empty{color:#9aa6b6!important;font-size:11px!important}
+.health-summary{display:flex;align-items:center;justify-content:space-between;gap:28px;padding:20px 22px;margin-bottom:14px}
+.health-score{display:flex;align-items:center;gap:16px;min-width:280px}
+.health-score h2{margin:0 0 5px;font-size:17px;color:#26384f}
+.health-score p{margin:0;color:#77869a;font-size:12px}
+.health-ring{--score:100;width:82px;height:82px;border-radius:50%;display:grid;place-items:center;position:relative;background:conic-gradient(#3bb57a calc(var(--score)*1%),#e9eef4 0)}
+.health-ring:before{content:"";position:absolute;inset:8px;border-radius:50%;background:#fff}
+.health-ring strong{position:relative;z-index:1;font-size:17px;color:#24405e}
+.health-summary-stats{display:grid;grid-template-columns:repeat(3,minmax(105px,1fr));gap:10px;flex:1;max-width:520px}
+.health-summary-stats>div{background:#f8fafc;border:1px solid #e8edf3;border-radius:10px;padding:12px 14px}
+.health-summary-stats span{display:block;font-size:11px;color:#8090a3;margin-bottom:4px}
+.health-summary-stats b{font-size:22px;color:#2e415a}.health-summary-stats b.good{color:#21865d}.health-summary-stats b.bad{color:#bf5555}
+.health-grid-comfort{grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:20px}
+.health-grid-comfort .health-card{padding:14px 15px;border-radius:11px;min-height:116px;transition:.18s ease}
+.health-grid-comfort .health-card:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(32,52,82,.08)}
+.health-card-top{display:flex;align-items:center;justify-content:space-between;gap:8px}.health-card-top span{font-size:13px;font-weight:700;color:#31435a}.health-card-top b{font-size:24px!important;line-height:1}.health-grid-comfort .health-card p{font-size:11px;margin:9px 0 10px;line-height:1.55}.health-grid-comfort .health-card small{font-size:10px;color:#7f8da0}.health-grid-comfort .health-card.danger{border-left:3px solid #df6b6b}.health-grid-comfort .health-card.warn{border-left:3px solid #e9a844}
+.health-list-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin:4px 0 10px}.health-list-head h2{font-size:16px;margin:0 0 3px;color:#2d3f56}.health-list-head p{font-size:11px;color:#8190a4;margin:0}.health-list-head>span{font-size:12px;color:#65768d;background:#eef3f8;padding:5px 9px;border-radius:999px}
+@media(max-width:1100px){.health-grid-comfort{grid-template-columns:repeat(2,1fr)}.health-summary{align-items:flex-start}.health-summary-stats{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:780px){header{min-height:64px}.header-resource-title strong{font-size:22px}.health-summary{flex-direction:column}.health-summary-stats{width:100%;max-width:none}.health-grid-comfort{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.health-summary-stats,.health-grid-comfort{grid-template-columns:1fr}.health-score{min-width:0}.health-ring{width:72px;height:72px}}
