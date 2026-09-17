@@ -1,6 +1,6 @@
 {
   "name": "feishu-resource-manager-v6-personal",
-  "version": "7.0.0",
+  "version": "7.1.2",
   "private": true,
   "type": "module",
   "scripts": {

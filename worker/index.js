@@ -5,7 +5,10 @@ let cached;
 function credentials(request,env){
   const appId=(env.FEISHU_APP_ID||'').trim();
   const appSecret=(env.FEISHU_APP_SECRET||'').trim();
-  if(!appId||!appSecret) throw new ApiError('后台尚未配置 FEISHU_APP_ID / FEISHU_APP_SECRET',503);
+  const missing=[];
+  if(!appId) missing.push('FEISHU_APP_ID');
+  if(!appSecret) missing.push('FEISHU_APP_SECRET');
+  if(missing.length) throw new ApiError(`后台尚未配置：${missing.join('、')}`,503);
   return {appId,appSecret};
 }
 function configuredTables(env){
