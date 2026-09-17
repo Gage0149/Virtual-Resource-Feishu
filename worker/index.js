@@ -3,11 +3,22 @@ const json = (data, status = 200) => new Response(JSON.stringify(data), {status,
 class ApiError extends Error { constructor(message,status=400){super(message);this.status=status;} }
 let cached;
 function credentials(request,env){
-  const appId=(request.headers.get('x-feishu-app-id')||env.FEISHU_APP_ID||'').trim();
-  const appSecret=(request.headers.get('x-feishu-app-secret')||env.FEISHU_APP_SECRET||'').trim();
-  if(!appId||!appSecret) throw new ApiError('请先在网页「飞书连接」中填写 App ID 和 App Secret',503);
+  const appId=(env.FEISHU_APP_ID||'').trim();
+  const appSecret=(env.FEISHU_APP_SECRET||'').trim();
+  if(!appId||!appSecret) throw new ApiError('后台尚未配置 FEISHU_APP_ID / FEISHU_APP_SECRET',503);
   return {appId,appSecret};
 }
+function configuredTables(env){
+  const mainApp=(env.FEISHU_APP_TOKEN||'').trim();
+  const make=(tableKey,appKey)=>{const table=(env[tableKey]||'').trim();if(!table)return null;return {appToken:(env[appKey]||mainApp).trim(),tableId:table};};
+  return {
+    resources:make('FEISHU_TABLE_ID','FEISHU_RESOURCE_APP_TOKEN'),
+    categories:make('FEISHU_CATEGORY_TABLE_ID','FEISHU_CATEGORY_APP_TOKEN'),
+    platforms:make('FEISHU_PLATFORM_TABLE_ID','FEISHU_PLATFORM_APP_TOKEN'),
+    publications:make('FEISHU_PUBLICATION_TABLE_ID','FEISHU_PUBLICATION_APP_TOKEN')
+  };
+}
+
 async function token(c){
   if(cached?.id===c.appId && cached.secret===c.appSecret && cached.until>Date.now()) return cached.value;
   const r=await fetch(`${API}/auth/v3/tenant_access_token/internal`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({app_id:c.appId,app_secret:c.appSecret})});
@@ -26,11 +37,17 @@ async function tagged(r){return {...r,revision:await revision(r.fields||{})};}
 function checkWriteOrigin(request){if(!['GET','HEAD'].includes(request.method)){const origin=request.headers.get('origin');if(origin&&origin!==new URL(request.url).origin)throw new ApiError('不允许跨站写入',403);}}
 export default {async fetch(request,env){const u=new URL(request.url);if(!u.pathname.startsWith('/api/'))return env.ASSETS.fetch(request);try{
  checkWriteOrigin(request);const c=credentials(request,env);
- if(u.pathname==='/api/health'&&request.method==='GET')return json({configured:true,mode:request.headers.get('x-feishu-app-id')?'browser-personal':'worker-secret'});
+ if(u.pathname==='/api/health'&&request.method==='GET'){const t=configuredTables(env);return json({configured:Boolean(t.resources?.appToken&&t.resources?.tableId),mode:'worker-auto',tables:Object.fromEntries(Object.entries(t).filter(([,v])=>v).map(([k,v])=>[k,{tableId:v.tableId}]))});}
+ if(u.pathname==='/api/bootstrap'&&request.method==='GET'){
+  const t=configuredTables(env);
+  if(!t.resources?.appToken||!t.resources?.tableId)throw new ApiError('后台尚未配置 FEISHU_APP_TOKEN / FEISHU_TABLE_ID',503);
+  for(const [k,v] of Object.entries(t)) if(v&&(!/^[A-Za-z0-9_-]+$/.test(v.appToken)||!/^tbl[A-Za-z0-9_-]+$/.test(v.tableId))) throw new ApiError(`${k} 的后台表格配置无效`,503);
+  return json({configured:true,interval:Number(env.FEISHU_SYNC_INTERVAL||30),tables:t});
+ }
  if(u.pathname==='/api/media/upload'&&request.method==='POST'){
   const form=await request.formData();
   const file=form.get('file');
-  const app=(form.get('app_token')||'').toString().trim();
+  const app=(form.get('app_token')||env.FEISHU_APP_TOKEN||'').toString().trim();
   if(!file||typeof file==='string')throw new ApiError('请选择要上传的图片');
   if(!/^[A-Za-z0-9_-]+$/.test(app))throw new ApiError('资源表 App Token 无效');
   if(!file.type?.startsWith('image/'))throw new ApiError('仅支持图片文件');
@@ -49,8 +66,8 @@ export default {async fetch(request,env){const u=new URL(request.url);if(!u.path
  }
  if(u.pathname==='/api/media'&&request.method==='GET'){
   const ft=(u.searchParams.get('file_token')||'').trim();
-  const app=(u.searchParams.get('app_token')||'').trim();
-  const table=(u.searchParams.get('table_id')||'').trim();
+  const app=(u.searchParams.get('app_token')||env.FEISHU_APP_TOKEN||'').trim();
+  const table=(u.searchParams.get('table_id')||env.FEISHU_TABLE_ID||'').trim();
   const field=(u.searchParams.get('field_id')||'').trim();
   const record=(u.searchParams.get('record_id')||'').trim();
   if(!/^[A-Za-z0-9_-]{6,}$/.test(ft))throw new ApiError('附件标识无效');
