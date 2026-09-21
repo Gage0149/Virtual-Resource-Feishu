@@ -1,18 +1,18 @@
-/* v11 layout: compact core-info cards, full-bleed covers, centered upload controls, full detail editor */
-.resource-grid{align-items:stretch!important}
-.card{display:flex!important;flex-direction:column!important;height:100%!important;min-height:360px!important;min-width:0!important}
-.card .cover,.card-no-cover{width:100%!important;height:158px!important;min-height:158px!important;aspect-ratio:auto!important;padding:0!important;margin:0!important;border-radius:0!important;overflow:hidden!important;position:relative!important}
-.card .cover img{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;display:block!important;object-fit:cover!important;object-position:center center!important;margin:0!important;padding:0!important;transform:scale(1.01)}
+/* v12 layout: natural-flow resource cards + full detail editor */
+
+/* Cards follow normal document flow. No artificial min-height, spacer rows or bottom-pushing. */
+.resource-grid{align-items:start!important}
+.card{display:block!important;height:auto!important;min-height:0!important;min-width:0!important;overflow:hidden!important}
+.card .cover,.card-no-cover{width:100%!important;height:auto!important;min-height:0!important;aspect-ratio:16/9!important;padding:0!important;margin:0!important;border-radius:0!important;overflow:hidden!important;position:relative!important}
+.card .cover img{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;display:block!important;object-fit:cover!important;object-position:center center!important;margin:0!important;padding:0!important;transform:none!important}
 .card .cover:after{display:none!important}
-.card-body{display:flex!important;flex-direction:column!important;flex:1 1 auto!important;padding:12px 13px 13px!important}
-.card-number{font-size:11px!important;line-height:1.25!important;font-weight:700!important;color:#7f8ba0!important;letter-spacing:.02em!important;margin:0 0 6px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
-.card-number.empty{visibility:hidden!important}
-.card h3{height:44px!important;min-height:44px!important;max-height:44px!important;display:-webkit-box!important;-webkit-line-clamp:2!important;-webkit-box-orient:vertical!important;white-space:normal!important;overflow:hidden!important;font-size:15px!important;line-height:1.45!important;margin:0 0 8px!important}
-.card-tags{display:flex!important;flex-wrap:wrap!important;gap:5px!important;min-height:23px!important;max-height:23px!important;overflow:hidden!important;margin:0 0 8px!important;align-content:flex-start!important}
-.card-tags.empty{visibility:hidden!important}
+.card-no-cover{display:grid!important;place-items:center!important;background:#f1f4f8!important;color:#9aa5b5!important;font-size:12px!important}
+.card-body{display:block!important;padding:12px 13px 13px!important}
+.card-number{font-size:11px!important;line-height:1.3!important;font-weight:700!important;color:#7f8ba0!important;letter-spacing:.02em!important;margin:0 0 6px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+.card h3{height:auto!important;min-height:0!important;max-height:none!important;display:-webkit-box!important;-webkit-line-clamp:2!important;-webkit-box-orient:vertical!important;white-space:normal!important;overflow:hidden!important;font-size:15px!important;line-height:1.45!important;margin:0 0 9px!important}
+.card-tags{display:flex!important;flex-wrap:wrap!important;gap:5px!important;min-height:0!important;max-height:none!important;overflow:visible!important;margin:0 0 10px!important;align-content:flex-start!important}
 .card-tags span{padding:4px 7px!important;font-size:10px!important;line-height:1!important;border-radius:6px!important}
-.card-drive-actions{display:grid!important;gap:5px!important;margin-top:auto!important;padding-top:9px!important;border-top:1px solid #edf1f5!important;min-height:67px!important;align-content:end!important}
-.card-drive-actions.empty{visibility:hidden!important;border-top-color:transparent!important}
+.card-drive-actions{display:grid!important;gap:5px!important;margin:10px 0 0!important;padding-top:9px!important;border-top:1px solid #edf1f5!important;min-height:0!important;align-content:initial!important}
 .drive-action-row{display:grid!important;grid-template-columns:minmax(0,1fr) 42px!important;gap:5px!important;align-items:center!important}
 .drive-open-btn,.drive-copy-btn{height:27px!important;min-height:27px!important;max-height:27px!important;border-radius:7px!important;font-size:10px!important;line-height:1!important;font-weight:700!important;padding-top:0!important;padding-bottom:0!important;box-sizing:border-box!important}
 .drive-open-btn{display:flex!important;align-items:center!important;justify-content:space-between!important;padding-left:8px!important;padding-right:8px!important;min-width:0!important}
@@ -20,14 +20,14 @@
 .drive-copy-btn{display:flex!important;align-items:center!important;justify-content:center!important;padding-left:6px!important;padding-right:6px!important}
 .card.no-cover .card-body{padding-top:12px!important}
 
-/* New-resource cover selector: preview stays full width; button text is perfectly centered. */
+/* New-resource cover selector: preview stays full width; button text is centered. */
 .attachment-upload{display:flex!important;flex-direction:column!important;align-items:stretch!important;text-align:center!important;padding:14px!important}
 .attachment-preview{width:100%!important;height:220px!important;margin:0 0 12px!important;display:grid!important;place-items:center!important;text-align:center!important}
 .attachment-preview img{width:100%!important;height:100%!important;object-fit:cover!important;object-position:center!important;display:block!important}
 .attachment-tools{width:100%!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:9px!important;flex-wrap:wrap!important;text-align:center!important}
 .attachment-tools .btn,.attachment-tools .upload-btn{min-width:96px!important;height:38px!important;min-height:38px!important;padding:0 14px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;text-align:center!important;line-height:1!important;vertical-align:middle!important;box-sizing:border-box!important}
 .attachment-tools .upload-btn{cursor:pointer!important}
-.attachment-tools .upload-btn::first-line{text-align:center!important}
+.attachment-tools .upload-btn span{display:inline-flex!important;width:100%!important;height:100%!important;align-items:center!important;justify-content:center!important;text-align:center!important}
 .attachment-upload>small{display:block!important;text-align:center!important;margin-top:8px!important}
 
 /* Keep the resource detail page complete and easy to scan. */
@@ -53,7 +53,6 @@
 .field-group{grid-column:1/-1!important;padding:14px!important;border-radius:12px!important}.field-group-title{font-size:13px!important;margin-bottom:12px!important}
 .drive-links-row{gap:14px!important}.drive-open-link{font-size:12px!important}
 
-@media(max-width:1500px){.card{min-height:352px!important}.card .cover,.card-no-cover{height:152px!important;min-height:152px!important}}
 @media(max-width:1180px){.detail-edit-layout{grid-template-columns:280px minmax(0,1fr)!important}.detail-cover{height:225px!important;min-height:225px!important}.attachment-preview{height:210px!important}}
 @media(max-width:860px){.detail-edit-layout{grid-template-columns:1fr!important}.detail-media-panel{position:static!important;max-width:none!important}.detail-edit-form{grid-template-columns:1fr!important}.detail-edit-form .field.full,.detail-edit-form .field-group.full{grid-column:auto!important}.detail-cover{height:280px!important}.attachment-preview{height:200px!important}}
-@media(max-width:560px){.card{min-height:360px!important}.card .cover,.card-no-cover{height:180px!important;min-height:180px!important}.card-drive-actions{min-height:67px!important}.detail-cover{height:220px!important;min-height:220px!important}.attachment-tools{gap:7px!important}.attachment-tools .btn,.attachment-tools .upload-btn{min-width:88px!important;height:36px!important;min-height:36px!important}}
+@media(max-width:560px){.card .cover,.card-no-cover{aspect-ratio:16/10!important}.detail-cover{height:220px!important;min-height:220px!important}.attachment-tools{gap:7px!important}.attachment-tools .btn,.attachment-tools .upload-btn{min-width:88px!important;height:36px!important;min-height:36px!important}}
