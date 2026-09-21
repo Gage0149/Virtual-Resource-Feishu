@@ -1,10 +1,11 @@
-/* v11 personal resource library enhancements */
+/* v12 personal resource library enhancements */
 (() => {
   function cardTagHtml(tags) {
     const list = (tags || []).filter(Boolean);
+    if (!list.length) return '';
     const shown = list.slice(0, 3);
     const more = list.length - shown.length;
-    return `<div class="card-tags ${list.length ? '' : 'empty'}">${shown.map(t => `<span>${esc(t)}</span>`).join('')}${more > 0 ? `<span class="tag-more">+${more}</span>` : ''}</div>`;
+    return `<div class="card-tags">${shown.map(t => `<span>${esc(t)}</span>`).join('')}${more > 0 ? `<span class="tag-more">+${more}</span>` : ''}</div>`;
   }
 
   function driveActionRow(name, url, kind) {
@@ -15,8 +16,8 @@
     </div>`;
   }
 
-  /* Card only keeps the information needed for daily browsing:
-     cover, resource number, title, tags and resource links. */
+  /* Resource cards use normal content flow: no fake equal-height placeholders.
+     Only daily-use information is shown: cover, number, title, tags and links. */
   card = function(r) {
     const cover = coverImg(fieldValue(r, 'cover'), label(r), mediaContext(r));
     const num = value(r, 'number') || '';
@@ -42,10 +43,10 @@
     return `<article class="card ${cover ? 'has-cover' : 'no-cover'}">
       ${coverBlock}
       <div class="card-body">
-        ${num ? `<div class="card-number">${esc(num)}</div>` : '<div class="card-number empty">未编号</div>'}
+        ${num ? `<div class="card-number">${esc(num)}</div>` : ''}
         <h3 data-detail="${esc(r.record_id)}" data-kind="resources">${esc(label(r))}</h3>
         ${cardTagHtml(tags)}
-        <div class="card-drive-actions ${linkRows ? '' : 'empty'}">${linkRows}</div>
+        ${linkRows ? `<div class="card-drive-actions">${linkRows}</div>` : ''}
       </div>
     </article>`;
   };
