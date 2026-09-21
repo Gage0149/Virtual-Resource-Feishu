@@ -16,37 +16,41 @@
   <aside class="side">
     <a class="brand" href="#resources" data-nav="resources">
       <span class="logo"><img src="./resource-logo.png" alt="资源库图标"></span>
-      <span><b>我的资源库</b><small>收集 · 整理 · 高效使用</small></span>
+      <span class="brand-copy"><b>我的资源库</b><small>收集 · 整理 · 高效使用</small></span>
     </a>
     <nav id="nav">
       <span class="nav-label">资源</span>
-      <button class="active" data-page="resources"><span class="nav-ico">▦</span><span>全部资源</span></button>
+      <button class="active" data-page="resources"><span class="nav-ico">▦</span><span>全部资源</span><b class="nav-count" data-total-count></b></button>
+
       <span class="nav-label">快速筛选</span>
       <button data-quick-filter="xiaohongshu"><span class="nav-ico platform xhs">小</span><span>小红书</span><b class="nav-count" data-count="xiaohongshu"></b></button>
-      <button data-quick-filter="xianyu"><span class="nav-ico platform xy">闲</span><span>咸鱼</span><b class="nav-count" data-count="xianyu"></b></button>
+      <button data-quick-filter="xianyu"><span class="nav-ico platform xy">闲</span><span>闲鱼</span><b class="nav-count" data-count="xianyu"></b></button>
       <button data-quick-filter="twitter"><span class="nav-ico platform x">X</span><span>X</span><b class="nav-count" data-count="twitter"></b></button>
+
+      <span class="nav-label">网盘</span>
       <button data-quick-filter="quark"><span class="nav-ico platform quark">Q</span><span>夸克网盘</span><b class="nav-count" data-count="quark"></b></button>
       <button data-quick-filter="baidu"><span class="nav-ico platform baidu">B</span><span>百度网盘</span><b class="nav-count" data-count="baidu"></b></button>
     </nav>
-    <div class="side-tip">
-      <b>飞书自动同步</b>
-      <span>网页和多维表格保持同一份数据</span>
-    </div>
     <div class="sideFoot"><span class="dot"></span><span id="sideStatus">正在连接飞书…</span></div>
   </aside>
+
   <main>
     <header>
-      <div class="breadcrumb"><div class="header-resource-title"><strong>资源库</strong></div></div>
+      <div class="breadcrumb">
+        <div class="header-resource-title"><strong>资源库</strong><span id="headerResourceCount">共 0 个资源</span></div>
+      </div>
       <div class="header-actions">
-        <span id="syncStatus" role="status"></span>
+        <span id="syncStatus" role="status">正在同步…</span>
         <button class="btn ghost" id="refresh">↻ 同步</button>
         <button class="btn primary" data-action="new" data-kind="resources">＋ 新增资源</button>
       </div>
     </header>
+
     <div id="notice" class="notice hidden" role="status"></div>
     <section id="view"></section>
   </main>
 </div>
+
 <div id="overlay" class="overlay hidden"><section id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" tabindex="-1"></section></div>
 <script src="./app.js"></script>
 <script src="./enhancements.js"></script>
