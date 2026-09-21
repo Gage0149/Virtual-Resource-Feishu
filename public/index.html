@@ -8,23 +8,24 @@
   <title>我的资源库 · 飞书资源管理</title>
   <link rel="stylesheet" href="./styles.css">
   <link rel="stylesheet" href="./simple.css">
+  <link rel="stylesheet" href="./v9.css">
 </head>
 <body>
 <div class="shell">
   <aside class="side">
     <a class="brand" href="#resources" data-nav="resources">
-      <span class="logo">✦</span>
+      <span class="logo"><img src="./resource-logo.png" alt="资源库图标"></span>
       <span><b>我的资源库</b><small>收集 · 整理 · 高效使用</small></span>
     </a>
     <nav id="nav">
       <span class="nav-label">资源</span>
       <button class="active" data-page="resources"><span class="nav-ico">▦</span><span>全部资源</span></button>
       <span class="nav-label">快速筛选</span>
-      <button data-quick-filter="xiaohongshu"><span class="nav-ico platform xhs">小</span><span>小红书已发布</span><b class="nav-count" data-count="xiaohongshu"></b></button>
-      <button data-quick-filter="xianyu"><span class="nav-ico platform xy">闲</span><span>闲鱼已发布</span><b class="nav-count" data-count="xianyu"></b></button>
-      <button data-quick-filter="twitter"><span class="nav-ico platform x">X</span><span>X 已发布</span><b class="nav-count" data-count="twitter"></b></button>
-      <button data-quick-filter="quark"><span class="nav-ico platform quark">Q</span><span>夸克网盘有链接</span><b class="nav-count" data-count="quark"></b></button>
-      <button data-quick-filter="baidu"><span class="nav-ico platform baidu">B</span><span>百度网盘有链接</span><b class="nav-count" data-count="baidu"></b></button>
+      <button data-quick-filter="xiaohongshu"><span class="nav-ico platform xhs">小</span><span>小红书</span><b class="nav-count" data-count="xiaohongshu"></b></button>
+      <button data-quick-filter="xianyu"><span class="nav-ico platform xy">闲</span><span>咸鱼</span><b class="nav-count" data-count="xianyu"></b></button>
+      <button data-quick-filter="twitter"><span class="nav-ico platform x">X</span><span>X</span><b class="nav-count" data-count="twitter"></b></button>
+      <button data-quick-filter="quark"><span class="nav-ico platform quark">Q</span><span>夸克网盘</span><b class="nav-count" data-count="quark"></b></button>
+      <button data-quick-filter="baidu"><span class="nav-ico platform baidu">B</span><span>百度网盘</span><b class="nav-count" data-count="baidu"></b></button>
     </nav>
     <div class="side-tip">
       <b>飞书自动同步</b>
@@ -47,5 +48,6 @@
 </div>
 <div id="overlay" class="overlay hidden"><section id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" tabindex="-1"></section></div>
 <script src="./app.js"></script>
+<script src="./enhancements.js"></script>
 </body>
 </html>
