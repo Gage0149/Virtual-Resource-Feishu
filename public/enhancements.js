@@ -1,7 +1,5 @@
-/* v10 personal resource library enhancements */
+/* v11 personal resource library enhancements */
 (() => {
-  const cleanPlatform = value => String(value || '').replace(/✅|❌/g, '').trim();
-
   function cardTagHtml(tags) {
     const list = (tags || []).filter(Boolean);
     const shown = list.slice(0, 3);
@@ -12,19 +10,20 @@
   function driveActionRow(name, url, kind) {
     if (!url) return '';
     return `<div class="drive-action-row ${kind}">
-      <a class="drive-open-btn" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(name)} <span>↗</span></a>
+      <a class="drive-open-btn" href="${esc(url)}" target="_blank" rel="noopener noreferrer"><span>${esc(name)}</span><i>↗</i></a>
       <button type="button" class="drive-copy-btn" data-action="copy-text" data-copy="${esc(url)}" data-label="${esc(name)}链接">复制</button>
     </div>`;
   }
 
+  /* Card only keeps the information needed for daily browsing:
+     cover, resource number, title, tags and resource links. */
   card = function(r) {
     const cover = coverImg(fieldValue(r, 'cover'), label(r), mediaContext(r));
-    const cat = value(r, 'category') || '';
     const num = value(r, 'number') || '';
     const tags = tagsOf(r);
     const links = resourceLinkMeta(r);
-    const pub = publicationValues(r).filter(Boolean).slice(0, 3).map(cleanPlatform);
     const extraMain = links.main && ![links.quark, links.baidu].includes(links.main) ? links.main : '';
+
     const coverBlock = cover
       ? `<div class="cover" data-detail="${esc(r.record_id)}" data-kind="resources">
           ${cover}
@@ -43,10 +42,9 @@
     return `<article class="card ${cover ? 'has-cover' : 'no-cover'}">
       ${coverBlock}
       <div class="card-body">
-        <div class="card-topline">${cat ? `<span class="card-category">${esc(cat)}</span>` : '<span></span>'}${num ? `<span class="card-number">${esc(num)}</span>` : ''}</div>
+        ${num ? `<div class="card-number">${esc(num)}</div>` : '<div class="card-number empty">未编号</div>'}
         <h3 data-detail="${esc(r.record_id)}" data-kind="resources">${esc(label(r))}</h3>
         ${cardTagHtml(tags)}
-        <div class="card-platforms ${pub.length ? '' : 'empty'}">${pub.map(x => `<span>${esc(x)}</span>`).join('')}</div>
         <div class="card-drive-actions ${linkRows ? '' : 'empty'}">${linkRows}</div>
       </div>
     </article>`;
@@ -63,7 +61,7 @@
     return `<div class="detail-cover-editor" data-attachment-field="${esc(f.field_name)}">
       <div class="detail-cover" data-upload-preview>${preview || '<div class="cover-empty-action">添加封面</div>'}<div class="cover-edit-badge">${preview ? '可更换、复制或清除封面' : '支持上传或粘贴图片'}</div></div>
       <div class="detail-cover-actions">
-        <label class="btn primary-soft upload-btn">更换封面<input type="file" accept="image/*" data-cover-upload="${esc(f.field_name)}" hidden></label>
+        <label class="btn primary-soft upload-btn"><span>更换封面</span><input type="file" accept="image/*" data-cover-upload="${esc(f.field_name)}" hidden></label>
         <button type="button" class="btn" data-action="paste-cover" data-field="${esc(f.field_name)}">粘贴图片</button>
         ${preview ? '<button type="button" class="btn" data-action="copy-cover-image">复制封面</button>' : ''}
         <button type="button" class="text-btn danger-text" data-action="clear-cover" data-field="${esc(f.field_name)}">清除</button>
