@@ -1,0 +1,49 @@
+/* v10 layout fixes: full-bleed covers, equal cards, centered upload controls, full detail editor */
+.resource-grid{align-items:stretch!important}
+.card{display:flex!important;flex-direction:column!important;height:100%!important;min-height:430px!important}
+.card .cover,.card-no-cover{width:100%!important;height:176px!important;min-height:176px!important;aspect-ratio:auto!important;padding:0!important;margin:0!important;border-radius:0!important;overflow:hidden!important;position:relative!important}
+.card .cover img{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;display:block!important;object-fit:cover!important;object-position:center center!important;margin:0!important;padding:0!important;transform:scale(1.01)}
+.card .cover:after{display:none!important}
+.card-body{display:flex!important;flex-direction:column!important;flex:1 1 auto!important;padding:13px 13px 14px!important}
+.card-topline{min-height:25px!important}
+.card h3{height:44px!important;min-height:44px!important;max-height:44px!important;display:-webkit-box!important;-webkit-line-clamp:2!important;-webkit-box-orient:vertical!important;white-space:normal!important;overflow:hidden!important}
+.card-tags{min-height:24px!important;align-content:flex-start!important}.card-tags.empty{visibility:hidden!important}
+.card-platforms{min-height:22px!important;align-content:flex-start!important}.card-platforms.empty{visibility:hidden!important;margin:5px 0 8px!important}
+.card-drive-actions{margin-top:auto!important;min-height:70px!important}.card-drive-actions.empty{border-top:1px solid transparent!important}
+.card.no-cover .card-body{padding-top:13px!important}
+
+/* New-resource cover selector: keep the preview full width and center the actions below it. */
+.attachment-upload{display:flex!important;flex-direction:column!important;align-items:stretch!important;text-align:center!important;padding:14px!important}
+.attachment-preview{width:100%!important;height:240px!important;margin:0 0 12px!important;place-items:center!important}
+.attachment-preview img{width:100%!important;height:100%!important;object-fit:cover!important;object-position:center!important;display:block!important}
+.attachment-tools{width:100%!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:10px!important;flex-wrap:wrap!important}
+.attachment-tools .btn,.attachment-tools .upload-btn{min-width:96px!important;justify-content:center!important;text-align:center!important}
+.attachment-upload>small{display:block!important;text-align:center!important;margin-top:8px!important}
+
+/* Restore the full original detail editor and make the dense content easier to scan. */
+.modal{width:min(1180px,calc(100vw - 28px))!important;max-width:1180px!important;max-height:94vh!important}
+.detail-edit-layout{display:grid!important;grid-template-columns:320px minmax(0,1fr)!important;gap:24px!important;align-items:start!important}
+.detail-media-panel{min-width:0!important;position:sticky!important;top:0!important;align-self:start!important}
+.detail-cover-editor{border:1px solid #e6ebf2!important;border-radius:14px!important;background:#fbfcfe!important;padding:12px!important}
+.detail-cover{width:100%!important;min-height:250px!important;height:250px!important;border-radius:11px!important;overflow:hidden!important;background:#f1f4f8!important}
+.detail-cover img{width:100%!important;height:100%!important;object-fit:cover!important;object-position:center!important;display:block!important}
+.detail-cover-actions{display:flex!important;justify-content:center!important;align-items:center!important;gap:8px!important;flex-wrap:wrap!important;margin-top:10px!important}
+.detail-cover-actions .btn,.detail-cover-actions .upload-btn{min-width:86px!important;text-align:center!important;justify-content:center!important}
+.cover-help{display:block!important;text-align:center!important;margin-top:8px!important;line-height:1.6!important}
+.detail-link-panel{margin-top:14px!important;border:1px solid #e7ecf3!important;border-radius:12px!important;background:#fff!important;padding:12px!important}
+.detail-link-head{display:flex!important;align-items:center!important;justify-content:space-between!important;margin-bottom:8px!important}
+.detail-link-head b{font-size:13px!important}.detail-link-head span{font-size:11px!important;color:#97a1b2!important}
+.detail-link-row{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;gap:8px!important;align-items:center!important;padding:8px 0!important;border-top:1px solid #f0f2f6!important}.detail-link-row:first-of-type{border-top:0!important}
+.detail-link-row a{min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;font-size:12px!important}
+.detail-edit-hint{margin-top:14px!important;padding:12px!important;border-radius:11px!important;background:#f6f8fb!important;color:#758196!important;font-size:12px!important;line-height:1.7!important}
+.detail-edit-form{display:grid!important;grid-template-columns:1fr 1fr!important;gap:6px 16px!important;align-content:start!important}
+.detail-edit-form .field{margin-bottom:8px!important}.detail-edit-form .field.full,.detail-edit-form .field-group.full{grid-column:1/-1!important}
+.detail-edit-form .field>span{font-size:13px!important}.detail-edit-form .field input,.detail-edit-form .field textarea,.detail-edit-form .field select,.detail-edit-form .multi-select-trigger{font-size:14px!important;min-height:44px!important}
+.detail-edit-form .field textarea{min-height:110px!important}
+.field-group{grid-column:1/-1!important;padding:14px!important;border-radius:12px!important}.field-group-title{font-size:13px!important;margin-bottom:12px!important}
+.drive-links-row{gap:14px!important}.drive-open-link{font-size:12px!important}
+
+@media(max-width:1500px){.card{min-height:420px!important}.card .cover,.card-no-cover{height:168px!important;min-height:168px!important}}
+@media(max-width:1180px){.detail-edit-layout{grid-template-columns:280px minmax(0,1fr)!important}.detail-cover{height:225px!important;min-height:225px!important}.attachment-preview{height:220px!important}}
+@media(max-width:860px){.detail-edit-layout{grid-template-columns:1fr!important}.detail-media-panel{position:static!important;max-width:none!important}.detail-edit-form{grid-template-columns:1fr!important}.detail-edit-form .field.full,.detail-edit-form .field-group.full{grid-column:auto!important}.detail-cover{height:280px!important}.attachment-preview{height:200px!important}}
+@media(max-width:560px){.card{min-height:0!important}.card .cover,.card-no-cover{height:190px!important;min-height:190px!important}.card-drive-actions{min-height:0!important}.detail-cover{height:220px!important;min-height:220px!important}.attachment-tools{gap:7px!important}.attachment-tools .btn,.attachment-tools .upload-btn{min-width:82px!important}}
