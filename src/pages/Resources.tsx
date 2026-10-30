@@ -8,7 +8,7 @@ import {
 import type { LucideIcon } from "lucide-react";
 import { api, displayValue, fieldValue, hasValue } from "../lib/api";
 import type { BitableRecord, RecordListResponse } from "../types";
-import JsonRecordEditor from "../components/JsonRecordEditor";
+import VisualRecordEditor from "../components/VisualRecordEditor";
 
 const PAGE_SIZE = 50;
 type ViewMode = "gallery" | "table";
@@ -297,9 +297,9 @@ export default function Resources({ linksOnly = false }: { linksOnly?: boolean }
           </div>
         </div>
       </section>
-      {editing && <JsonRecordEditor title={`编辑资源 · ${editing.record_id}`} initialFields={editing.fields}
+      {editing && <VisualRecordEditor title={`编辑资源 · ${editing.record_id}`} initialFields={editing.fields}
         onSave={(fields) => save(fields, editing.record_id)} onClose={() => setEditing(null)}/>}
-      {creating && <JsonRecordEditor title="新增资源" initialFields={{ "资源名称": "" }} onSave={(fields) => save(fields)} onClose={() => setCreating(false)}/>}
+      {creating && <VisualRecordEditor title="新增资源" initialFields={{}} onSave={(fields) => save(fields)} onClose={() => setCreating(false)}/>}
       {linksOnly && <div className="inline-hint"><Link2 size={15}/> 列表不会直接显示完整分享地址。点击编辑可查看和修改字段。</div>}
     </div>
   );
