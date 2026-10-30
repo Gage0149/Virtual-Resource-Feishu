@@ -1,0 +1,14 @@
+name = "virtual-resource-feishu"
+main = "src/worker.ts"
+compatibility_date = "2026-10-30"
+workers_dev = true
+
+# React/Vite output is deployed as Workers Static Assets together with this Worker.
+[assets]
+directory = "./dist"
+binding = "ASSETS"
+not_found_handling = "single-page-application"
+run_worker_first = ["/api/*"]
+
+# Keep credentials out of this file. Configure runtime values in
+# Workers & Pages > virtual-resource-feishu > Settings > Variables and Secrets.
