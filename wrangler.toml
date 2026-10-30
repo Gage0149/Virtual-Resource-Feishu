@@ -3,12 +3,12 @@ main = "src/worker.ts"
 compatibility_date = "2026-10-30"
 workers_dev = true
 
-# React/Vite output is deployed as Workers Static Assets together with this Worker.
+# 保留 Cloudflare Dashboard 手动配置的环境变量
+keep_vars = true
+
+# React/Vite 前端与 Worker 一起部署
 [assets]
 directory = "./dist"
 binding = "ASSETS"
 not_found_handling = "single-page-application"
 run_worker_first = ["/api/*"]
-
-# Keep credentials out of this file. Configure runtime values in
-# Workers & Pages > virtual-resource-feishu > Settings > Variables and Secrets.
