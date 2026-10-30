@@ -165,3 +165,63 @@ export async function listFields(env: Env, tableId: string): Promise<unknown> {
     `/open-apis/bitable/v1/apps/${encodeURIComponent(env.FEISHU_APP_TOKEN)}/tables/${encodeURIComponent(tableId)}/fields?page_size=100`
   );
 }
+
+export async function downloadBitableMedia(
+  env: Env,
+  fileToken: string,
+  extra?: string
+): Promise<Response> {
+  if (!/^[A-Za-z0-9_-]{6,160}$/.test(fileToken)) {
+    throw new FeishuError("飞书附件 token 格式不正确。");
+  }
+
+  const mediaUrl = new URL(
+    `/open-apis/drive/v1/medias/${encodeURIComponent(fileToken)}/download`,
+    "https://open.feishu.cn"
+  );
+
+  if (extra) {
+    if (extra.length > 5000) throw new FeishuError("飞书附件权限参数过长。");
+    let parsedExtra: unknown;
+    try {
+      parsedExtra = JSON.parse(extra);
+    } catch {
+      throw new FeishuError("飞书附件权限参数格式不正确。");
+    }
+    const bitablePerm = parsedExtra && typeof parsedExtra === "object"
+      ? (parsedExtra as Record<string, unknown>).bitablePerm
+      : null;
+    const tableId = bitablePerm && typeof bitablePerm === "object"
+      ? (bitablePerm as Record<string, unknown>).tableId
+      : null;
+    if (tableId && tableId !== env.FEISHU_RESOURCE_TABLE_ID) {
+      throw new FeishuError("附件不属于当前配置的资源数据表。");
+    }
+    mediaUrl.searchParams.set("extra", extra);
+  }
+
+  const accessToken = await getTenantAccessToken(env);
+  const upstream = await fetch(mediaUrl.toString(), {
+    method: "GET",
+    headers: { Authorization: `Bearer ${accessToken}` }
+  });
+
+  if (!upstream.ok) {
+    const detail = await upstream.text().catch(() => "");
+    throw new FeishuError(`读取飞书封面失败（HTTP ${upstream.status}）。${detail.slice(0, 240)}`);
+  }
+
+  const contentType = upstream.headers.get("Content-Type") || "application/octet-stream";
+  if (!contentType.toLowerCase().startsWith("image/")) {
+    throw new FeishuError("飞书资源封面字段中的附件不是可显示的图片。");
+  }
+
+  const headers = new Headers({
+    "Content-Type": contentType,
+    "Cache-Control": "private, max-age=300",
+    "X-Content-Type-Options": "nosniff"
+  });
+  const cacheTag = upstream.headers.get("ETag");
+  if (cacheTag) headers.set("ETag", cacheTag);
+  return new Response(upstream.body, { status: 200, headers });
+}

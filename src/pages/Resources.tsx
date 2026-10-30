@@ -16,12 +16,45 @@ type ViewMode = "gallery" | "table";
 function attachmentUrl(value: unknown): string | null {
   const candidates = Array.isArray(value) ? value : [value];
   for (const candidate of candidates) {
-    if (typeof candidate === "string" && /^https?:\/\//i.test(candidate)) return candidate;
-    if (!candidate || typeof candidate !== "object") continue;
-    const item = candidate as Record<string, unknown>;
-    for (const key of ["tmp_url", "url", "preview_url", "thumbnail_url", "download_url", "file_url"]) {
-      const possible = item[key];
-      if (typeof possible === "string" && /^https?:\/\//i.test(possible)) return possible;
+    let token = "";
+    let extra = "";
+    const urls: string[] = [];
+
+    if (typeof candidate === "string" && /^https?:\/\//i.test(candidate)) {
+      urls.push(candidate);
+    } else if (candidate && typeof candidate === "object") {
+      const item = candidate as Record<string, unknown>;
+      token = typeof item.file_token === "string" ? item.file_token : "";
+      for (const key of ["url", "tmp_url", "preview_url", "thumbnail_url", "download_url", "file_url"]) {
+        const possible = item[key];
+        if (typeof possible === "string" && /^https?:\/\//i.test(possible)) urls.push(possible);
+      }
+    } else {
+      continue;
+    }
+
+    for (const rawUrl of urls) {
+      try {
+        const parsed = new URL(rawUrl);
+        const candidateExtra = parsed.searchParams.get("extra");
+        if (candidateExtra) extra = candidateExtra;
+        if (parsed.hostname === "open.feishu.cn") {
+          const mediaMatch = parsed.pathname.match(/\/medias\/([^/]+)\/download$/);
+          if (!token && mediaMatch) token = mediaMatch[1];
+          if (!token && parsed.pathname.includes("batch_get_tmp_download_url")) {
+            token = parsed.searchParams.get("file_tokens") || "";
+          }
+        } else {
+          return rawUrl;
+        }
+      } catch {
+        // Ignore malformed attachment URLs and fall back to the file token.
+      }
+    }
+
+    if (token && /^[A-Za-z0-9_-]{6,160}$/.test(token)) {
+      const query = extra ? `?extra=${encodeURIComponent(extra)}` : "";
+      return `/api/feishu/attachments/${encodeURIComponent(token)}${query}`;
     }
   }
   return null;

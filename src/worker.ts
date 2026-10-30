@@ -11,6 +11,7 @@ import {
   listFields,
   listRecords,
   listTables,
+  downloadBitableMedia,
   type Env as FeishuEnv
 } from "./server/feishu";
 import { handleCreate, handleList, handleUpdate } from "./server/table-api";
@@ -120,6 +121,24 @@ async function handleApi(request: Request, env: WorkerEnv): Promise<Response> {
 
     if (["POST", "PUT", "PATCH", "DELETE"].includes(method) && !sameOrigin(request)) {
       return json({ ok: false, message: "Invalid request origin." }, 403);
+    }
+  }
+
+  const attachmentMatch = path.match(/^\/api\/feishu\/attachments\/([^/]+)$/);
+  if (attachmentMatch && method === "GET") {
+    try {
+      const fileToken = decodeURIComponent(attachmentMatch[1]);
+      const imageResponse = await downloadBitableMedia(
+        env,
+        fileToken,
+        url.searchParams.get("extra") || undefined
+      );
+      return imageResponse;
+    } catch (error) {
+      return json({
+        ok: false,
+        message: error instanceof Error ? error.message : "读取飞书封面失败。"
+      }, 502);
     }
   }
 
