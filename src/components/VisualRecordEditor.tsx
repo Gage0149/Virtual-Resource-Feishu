@@ -171,7 +171,7 @@ export default function VisualRecordEditor({
       })
       .finally(() => { if (active) setSchemaLoading(false); });
     return () => { active = false; };
-  }, [initialFields]);
+  }, []);
 
   const groups = useMemo(() => {
     const names: FieldGroupName[] = ["基础信息", "网盘链接", "发布管理", "其他信息"];
@@ -330,7 +330,7 @@ export default function VisualRecordEditor({
 
   async function submit() {
     setError("");
-    const nameField = definitions.find((field) => field.field_name === "资源名称" || field.is_primary);
+    const nameField = definitions.find((field) => field.field_name === "资源名称") || definitions.find((field) => field.is_primary && isEditable(field));
     if (nameField && !stringValue(values[nameField.field_name]).trim()) {
       setError("请填写必填字段「" + nameField.field_name + "」。");
       return;
