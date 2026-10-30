@@ -12,6 +12,7 @@ import {
   listRecords,
   listTables,
   downloadBitableMedia,
+  uploadBitableMedia,
   type Env as FeishuEnv
 } from "./server/feishu";
 import { handleCreate, handleList, handleUpdate } from "./server/table-api";
@@ -138,6 +139,34 @@ async function handleApi(request: Request, env: WorkerEnv): Promise<Response> {
       return json({
         ok: false,
         message: error instanceof Error ? error.message : "读取飞书封面失败。"
+      }, 502);
+    }
+  }
+
+  if (path === "/api/feishu/upload" && method === "POST") {
+    try {
+      const form = await request.formData();
+      const file = form.get("file");
+      if (!(file instanceof File)) {
+        return json({ ok: false, message: "请选择要上传的文件。" }, 400);
+      }
+      if (file.size > 20 * 1024 * 1024) {
+        return json({ ok: false, message: "单个附件不能超过 20MB。" }, 400);
+      }
+      const attachment = await uploadBitableMedia(env, file);
+      return json({
+        ok: true,
+        attachment: {
+          file_token: attachment.file_token,
+          name: file.name,
+          size: file.size,
+          type: file.type
+        }
+      });
+    } catch (error) {
+      return json({
+        ok: false,
+        message: error instanceof Error ? error.message : "上传附件失败。"
       }, 502);
     }
   }

@@ -166,6 +166,38 @@ export async function listFields(env: Env, tableId: string): Promise<unknown> {
   );
 }
 
+export async function uploadBitableMedia(
+  env: Env,
+  file: File
+): Promise<{ file_token: string }> {
+  if (!file.size) throw new FeishuError("不能上传空文件。");
+  if (file.size > 20 * 1024 * 1024) {
+    throw new FeishuError("单个附件不能超过 20MB；更大的文件需要使用飞书分片上传接口。");
+  }
+  if (file.name.length > 250) throw new FeishuError("文件名不能超过 250 个字符。");
+
+  const accessToken = await getTenantAccessToken(env);
+  const form = new FormData();
+  form.append("file_name", file.name);
+  form.append("parent_type", file.type.startsWith("image/") ? "bitable_image" : "bitable_file");
+  form.append("parent_node", env.FEISHU_APP_TOKEN);
+  form.append("size", String(file.size));
+  form.append("file", file, file.name);
+
+  const response = await fetch("https://open.feishu.cn/open-apis/drive/v1/medias/upload_all", {
+    method: "POST",
+    headers: { Authorization: "Bearer " + accessToken },
+    body: form
+  });
+  const result = await response.json() as {
+    code?: number; msg?: string; data?: { file_token?: string }
+  };
+  if (!response.ok || result.code !== 0 || !result.data?.file_token) {
+    throw new FeishuError(result.msg || ("上传飞书附件失败（HTTP " + response.status + "）。"), result.code);
+  }
+  return { file_token: result.data.file_token };
+}
+
 export async function downloadBitableMedia(
   env: Env,
   fileToken: string,
